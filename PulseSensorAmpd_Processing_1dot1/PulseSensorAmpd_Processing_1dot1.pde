@@ -40,6 +40,9 @@ int[] rate;      // USED TO POSITION BPM DATA WAVEFORM
 float zoom;      // USED WHEN SCALING PULSE WAVEFORM TO PULSE WINDOW
 float offset;    // USED WHEN SCALING PULSE WAVEFORM TO PULSE WINDOW
 color eggshell = color(255, 253, 248);
+color dark = color(0,0,0);
+color ground = color(207,165,107);
+color sky = color(181,220,247);
 int heart = 0;   // This variable times the heart image 'pulse' on screen
 //  THESE VARIABLES DETERMINE THE SIZE OF THE DATA WINDOWS
 int PulseWindowWidth = 490;
@@ -145,10 +148,11 @@ void setup() {
   println("setup() complete");
 
 }
-  
+ 
 void draw() {
+
+  background(sky);
   refresh_board();
-  background(0);
   noStroke();
   
   /*
@@ -215,10 +219,14 @@ void draw() {
   bezier(width-100,50, width-190,-20, width-200,140, width-100,150);
   strokeWeight(1);          // reset the strokeWeight for next time
 
+//DRAW THE GROUND
+  fill(ground);
+  rect(0,550,1400,100);
+
 
 // PRINT THE DATA AND VARIABLE VALUES
-  fill(eggshell);                                       // get ready to print text
-  text("Whee",245,30);     // tell them what you are
+  fill(dark);                                       // get ready to print text
+  text("Heartbeat Running",245,30);     // tell them what you are
   text("IBI " + IBI + "mS",600,585);                    // print the time between heartbeats in mS
   text(BPM + " BPM",600,200);                           // print the Beats Per Minute
   //text("Pulse Window Scale " + nf(zoom,1,2), 150, 585); // show the current scale of Pulse Window 
@@ -334,7 +342,7 @@ void draw() {
 //   
 }  //end of draw loop
 
-  void refresh_board(){
+void refresh_board(){
     boolean isAnimating=false;
     pg = createGraphics(width,height);
     //println("refresh");
