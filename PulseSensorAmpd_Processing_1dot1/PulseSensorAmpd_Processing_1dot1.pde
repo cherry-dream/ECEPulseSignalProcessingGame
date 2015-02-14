@@ -63,7 +63,13 @@ int id_counter;
 int WIDTH = 8;
 int HEIGHT = 4;
 PGraphics pg;
- 
+Player player;
+Boulder boulder;
+PImage img_boulder;
+boolean started = false;
+PImage bird1;
+PImage bird2;
+
 void setup() {
   size(700, 600);  // Stage size
   frameRate(100);  
@@ -73,18 +79,25 @@ void setup() {
   rectMode(CENTER);
   ellipseMode(CENTER);  
   
-  Player player = new Player();
-  player.y = 550;
+  player = new Player();
+  player.y = 450;
   player.x = 100;
   player.speed = 0;
-  
-  Boulder boulder = new Boulder();
-  boulder.x = 0;//-100;
-  boulder.y = 550;
-  boulder.speed = 5;
+
+  boulder = new Boulder();
+  boulder.x = 0;
+  boulder.y = 400;
+  boulder.speed = 0;
   boulder.difficulty = 1;
   
-  PImage img_boulder = loadImage("boulder.png");
+  img_boulder = loadImage("boulder.png");
+  img_boulder.resize(100, 100);
+  
+  //DRAW THE PLAYER
+  bird1 = loadImage("bird1.png");
+  bird2 = loadImage("bird2.png");
+  bird1.resize(50,50);
+  bird2.resize(50,50);
 // Scrollbar constructor inputs: x,y,width,height,minVal,maxVal
 /*
   scaleBar = new Scrollbar (400, 575, 180, 12, 0.5, 1.0);  // set parameters for the scale bar
@@ -159,9 +172,9 @@ void draw() {
   noStroke();
   
   //UPDATE ALL OBJ MOVEMENT HERE
-  map_speed;
+  //map_speed;
   boulder.x+=boulder.speed;
-  
+  player.x+=player.speed;
   
   /*
 // DRAW OUT THE PULSE WINDOW AND BPM WINDOW RECTANGLES  
@@ -198,6 +211,17 @@ void draw() {
    }*/
 // then limit and scale the BPM value
    BPM = min(BPM,200);                     // limit the highest BPM value to 200
+   if(!started){
+     if(BPM != 0){
+       started = true;
+       player.speed = BPM/100.0;
+       boulder.speed = 1;
+     }
+   }
+   else{
+     player.speed = BPM/100.0;
+     boulder.speed = 1;
+   }
    //float dummy = map(BPM,0,200,555,215);   // map it to the heart rate window Y
    //rate[rate.length-1] = int(dummy);       // set the rightmost pixel to the new data point value
  } 
@@ -215,6 +239,8 @@ void draw() {
  
  //Draw Boulder
  image(img_boulder,boulder.x,boulder.y);
+ image(bird1, player.x, player.y);
+smooth();
  
  
 // DRAW THE HEART AND MAYBE MAKE IT BEAT
@@ -230,10 +256,13 @@ void draw() {
   bezier(width-100,50, width-20,-20, width,140, width-100,150);
   bezier(width-100,50, width-190,-20, width-200,140, width-100,150);
   strokeWeight(1);          // reset the strokeWeight for next time
-
+  noStroke();
+  
 //DRAW THE GROUND
   fill(ground);
   rect(0,550,1400,100);
+
+
 
 
 // PRINT THE DATA AND VARIABLE VALUES
