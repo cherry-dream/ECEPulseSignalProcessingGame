@@ -36,6 +36,11 @@ XML xml;
 XML xml_single;
 int id_counter;
 
+
+int WIDTH = 8;
+int HEIGHT = 4;
+PGraphics pg;
+ 
 void setup() {
   size(700, 600);  // Stage size
   frameRate(100);  
@@ -48,19 +53,19 @@ void setup() {
 /*
   scaleBar = new Scrollbar (400, 575, 180, 12, 0.5, 1.0);  // set parameters for the scale bar
   */
-  RawY = new int[PulseWindowWidth];          // initialize raw pulse waveform array
-  ScaledY = new int[PulseWindowWidth];       // initialize scaled pulse waveform array
-  rate = new int [BPMWindowWidth];           // initialize BPM waveform array
+//  RawY = new int[PulseWindowWidth];          // initialize raw pulse waveform array
+//  ScaledY = new int[PulseWindowWidth];       // initialize scaled pulse waveform array
+//  rate = new int [BPMWindowWidth];           // initialize BPM waveform array
   //zoom = 0.75;                               // initialize scale of heartbeat window
  
   
 // set the visualizer lines to 0
- for (int i=0; i<rate.length; i++){
-    rate[i] = 555;      // Place BPM graph line at bottom of BPM Window 
-   }
- for (int i=0; i<RawY.length; i++){
-    RawY[i] = height/2; // initialize the pulse window data line to V/2
- }
+// for (int i=0; i<rate.length; i++){
+//    rate[i] = 555;      // Place BPM graph line at bottom of BPM Window 
+//   }
+// for (int i=0; i<RawY.length; i++){
+//    RawY[i] = height/2; // initialize the pulse window data line to V/2
+// }
  
  
 // GO FIND THE ARDUINO
@@ -112,6 +117,7 @@ void setup() {
 }
   
 void draw() {
+  refresh_board();
   background(0);
   noStroke();
   
@@ -293,9 +299,74 @@ void draw() {
   scaleBar.update (mouseX, mouseY);
   scaleBar.display();
   
+<<<<<<< HEAD
   id_counter++;*/
 //   
 }  //end of draw loop
 
-
+  void refresh_board(){
+    boolean isAnimating=false;
+    pg = createGraphics(width,height);
+    //println("refresh");
+    isAnimating = false;
+    pg.beginDraw();
+    pg.background(0);
+    pg.background(127,0);
+    pg.noFill();
+    pg.stroke(0,255,0);
+    pg.strokeWeight(3);
+//    if(arty_white){
+//      pg.ellipse(BOX_W*(GRID_SIZE-1+0.5),BOX_W*(GRID_SIZE+0.5),0.8*BOX_W,0.8*BOX_W);
+//    }
+//    if(arty_black){
+//      pg.ellipse(BOX_W*0.5,BOX_W*(GRID_SIZE+0.5),0.8*BOX_W,0.8*BOX_W);
+//    }
+    pg.stroke(0);
+    pg.strokeWeight(1);
+     
+    //draw the placed pieces
+//    for (int gX=0;gX<WIDTH;gX++) {
+//      for (int gY=0;gY<HEIGHT;gY++) {
+//        if(pieces[gX][gY].isPlaced){
+//          boolean isPieceAnimating = pieces[gX][gY].anim_update();
+//          isAnimating = (isAnimating || isPieceAnimating);
+//          pg.fill(pieces[gX][gY].face ? 255 : 0);
+//          pg.ellipse(BOX_W*(gX+0.5), BOX_W*(gY+0.5), 0.8*BOX_W, 0.8*BOX_W*pieces[gX][gY].height_fraction);
+//        }
+//      }
+//    }
+     
+//    int valid_count=0;
+//    if(!isAnimating){
+//      for(int i=0;i<2;i++){ //try at most 2 times to find a valid move
+//        valid_count = rationalize();
+//        if(valid_count!=0){
+//          break;
+//        }
+//        turn = !turn;
+//      }
+      //display the score
+      pg.beginDraw();
+//      pg.textFont(uiFont);
+      pg.textAlign(CENTER,CENTER);
+      pg.fill(255);
+      //pg.text(str(black_score),BOX_W*0.5,BOX_W*(GRID_SIZE+0.5));
+      pg.fill(0);
+      //pg.text(str(white_score),BOX_W*(GRID_SIZE-1+0.5),BOX_W*(GRID_SIZE+0.5));
+      pg.endDraw();
+//      if(valid_count!=0){ //show the valid moves
+//        for (int gX=0;gX<GRID_SIZE;gX++) {
+//          for (int gY=0;gY<GRID_SIZE;gY++) {
+//            if(pieces[gX][gY].isValidMove()){
+//              pg.fill(turn ? 255 : 0);
+//              pg.ellipse(BOX_W*(pieces[gX][gY].gridX+0.5), BOX_W*(pieces[gX][gY].gridY+0.5), 0.2*BOX_W, 0.2*BOX_W);
+//            }
+//          }
+//        }
+//      }else{ //there are no valid moves for either player
+//        game_over();
+//      }
+//    }
+//    pg.endDraw();
+  }
 
