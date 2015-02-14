@@ -69,6 +69,11 @@ PImage img_boulder;
 boolean started = false;
 PImage bird1;
 PImage bird2;
+PImage img_tree;
+
+ArrayList<Tree> tree_list;
+
+int spawnTreeTimer = 100;
 
 void setup() {
   size(700, 600);  // Stage size
@@ -78,6 +83,8 @@ void setup() {
   textAlign(CENTER);
   rectMode(CENTER);
   ellipseMode(CENTER);  
+  
+  tree_list = new ArrayList<Tree>();
   
   player = new Player();
   player.y = 450;
@@ -92,6 +99,9 @@ void setup() {
   
   img_boulder = loadImage("boulder.png");
   img_boulder.resize(100, 100);
+  
+  img_tree = loadImage("tree.png");
+  img_tree.resize(60,100);
   
   //DRAW THE PLAYER
   bird1 = loadImage("bird1.png");
@@ -167,6 +177,16 @@ void setup() {
  
 void draw() {
 
+  spawnTreeTimer--;
+  if(spawnTreeTimer<=0) {
+    //Spawn tree
+    Tree temp = new Tree();
+    tree.x = 700+50;
+    tree.y = 500-100;
+    tree_list.add(new Tree);
+    spawnTreeTimer = random(50, 100);
+  }
+  
   background(sky);
   refresh_board();
   noStroke();
@@ -175,6 +195,15 @@ void draw() {
   //map_speed;
   boulder.x+=boulder.speed;
   player.x+=player.speed;
+  
+  
+  for(int i=0; i<tree_list.size(); i++){
+    tree_list[i].x-=player.speed;
+    if (tree_list[i].x<0) {
+        tree_list.remove(tree_list[i]);
+        i--;
+    }
+  }
   
   /*
 // DRAW OUT THE PULSE WINDOW AND BPM WINDOW RECTANGLES  
