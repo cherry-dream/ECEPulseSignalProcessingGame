@@ -67,6 +67,7 @@ Player player;
 Boulder boulder;
 PImage img_boulder;
 boolean started = false;
+int shake = 0;
 PImage bird1;
 PImage bird2;
 PImage img_tree;
@@ -77,7 +78,7 @@ int spawnTreeTimer = 100;
 
 void setup() {
   size(700, 600);  // Stage size
-  frameRate(100);  
+  frameRate(60);  
   font = loadFont("Arial-BoldMT-24.vlw");
   textFont(font);
   textAlign(CENTER);
@@ -88,11 +89,11 @@ void setup() {
   
   player = new Player();
   player.y = 450;
-  player.x = 100;
+  player.x = 300;
   player.speed = 0;
 
   boulder = new Boulder();
-  boulder.x = 0;
+  boulder.x = 100;
   boulder.y = 400;
   boulder.speed = 0;
   boulder.difficulty = 1;
@@ -193,8 +194,8 @@ void draw() {
   
   //UPDATE ALL OBJ MOVEMENT HERE
   //map_speed;
-  boulder.x+=boulder.speed;
-  player.x+=player.speed;
+  boulder.x+=boulder.speed - player.speed;
+  //player.x+=player.speed;
   
   
   for(int i=0; i<tree_list.size(); i++){
@@ -243,13 +244,13 @@ void draw() {
    if(!started){
      if(BPM != 0){
        started = true;
-       player.speed = BPM/100.0;
-       boulder.speed = 1;
+       player.speed = float(BPM)/100.0;
+       boulder.speed = 1.0;
      }
    }
    else{
-     player.speed = BPM/100.0;
-     boulder.speed = 1;
+     player.speed = float(BPM)/100.0;
+     boulder.speed = 1.0;
    }
    //float dummy = map(BPM,0,200,555,215);   // map it to the heart rate window Y
    //rate[rate.length-1] = int(dummy);       // set the rightmost pixel to the new data point value
@@ -268,7 +269,18 @@ void draw() {
  
  //Draw Boulder
  image(img_boulder,boulder.x,boulder.y);
- image(bird1, player.x, player.y);
+ 
+ //Draw Bird
+ if(shake <= 10){
+   image(bird1, player.x, player.y);
+   shake += 1;
+ }
+ else if(shake > 10 && shake <= 20){
+   image(bird2, player.x, player.y);
+   shake += 1;
+ }
+ else shake = 0;
+ 
 smooth();
  
  
