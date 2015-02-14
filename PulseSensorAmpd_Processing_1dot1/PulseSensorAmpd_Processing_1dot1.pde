@@ -11,26 +11,27 @@ PFont font;
 Scrollbar scaleBar;
 
 class Player {
-    int x;
-    int y;
+    float x;
+    float y;
     float speed;
 
 }
 
 class Tree {
-    int x;
-    int y;
+    float x;
+    float y;
 }
 
 class Boulder {
-    int x;
-    int y;
+    float x;
+    float y;
     float speed;
     int difficulty;
 }
 
 Serial port;     
 
+int score=0;
 int Sensor;      // HOLDS PULSE SENSOR DATA FROM ARDUINO
 int IBI;         // HOLDS TIME BETWEN HEARTBEATS FROM ARDUINO
 int BPM;         // HOLDS HEART RATE VALUE FROM ARDUINO
@@ -181,11 +182,11 @@ void draw() {
   spawnTreeTimer--;
   if(spawnTreeTimer<=0) {
     //Spawn tree
-    Tree temp = new Tree();
+    Tree tree = new Tree();
     tree.x = 700+50;
     tree.y = 500-100;
-    tree_list.add(new Tree);
-    spawnTreeTimer = random(50, 100);
+    tree_list.add(tree);
+    spawnTreeTimer = int(random(50, 100));
   }
   
   background(sky);
@@ -195,13 +196,18 @@ void draw() {
   //UPDATE ALL OBJ MOVEMENT HERE
   //map_speed;
   boulder.x+=boulder.speed - player.speed;
+  if (boulder.x<50)
+    boulder.speed+=0.001;
   //player.x+=player.speed;
-  
+  if (boulder.x+100-20 >= player.x) {
+    exit();
+  }
   
   for(int i=0; i<tree_list.size(); i++){
-    tree_list[i].x-=player.speed;
-    if (tree_list[i].x<0) {
-        tree_list.remove(tree_list[i]);
+    tree_list.get(i).x-=player.speed;
+    image(img_tree, tree_list.get(i).x, tree_list.get(i).y);
+    if (tree_list.get(i).x<0) {
+        tree_list.remove(tree_list.get(i));
         i--;
     }
   }
@@ -245,12 +251,13 @@ void draw() {
      if(BPM != 0){
        started = true;
        player.speed = float(BPM)/100.0;
-       boulder.speed = 1.0;
+       boulder.speed = 0.8;
      }
    }
    else{
      player.speed = float(BPM)/100.0;
-     boulder.speed = 1.0;
+     score+=1;
+     //boulder.speed = 1.0;
    }
    //float dummy = map(BPM,0,200,555,215);   // map it to the heart rate window Y
    //rate[rate.length-1] = int(dummy);       // set the rightmost pixel to the new data point value
@@ -308,8 +315,8 @@ smooth();
 
 // PRINT THE DATA AND VARIABLE VALUES
   fill(dark);                                       // get ready to print text
-  text("Heartbeat Running",245,30);     // tell them what you are
-  text("IBI " + IBI + "mS",600,585);                    // print the time between heartbeats in mS
+  text("Heartbeat Running!!!",245,30);     // tell them what you are
+  text("Score: " + score,600,585);                    // print the time between heartbeats in mS
   text(BPM + " BPM",600,200);                           // print the Beats Per Minute
   //text("Pulse Window Scale " + nf(zoom,1,2), 150, 585); // show the current scale of Pulse Window 
   
