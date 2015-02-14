@@ -10,6 +10,25 @@ import processing.serial.*;
 PFont font;
 Scrollbar scaleBar;
 
+class Player {
+    int x;
+    int y;
+    float speed;
+
+}
+
+class Tree {
+    int x;
+    int y;
+}
+
+class Boulder {
+    int x;
+    int y;
+    float speed;
+    int difficulty;
+}
+
 Serial port;     
 
 int Sensor;      // HOLDS PULSE SENSOR DATA FROM ARDUINO
@@ -49,6 +68,17 @@ void setup() {
   textAlign(CENTER);
   rectMode(CENTER);
   ellipseMode(CENTER);  
+  
+  Player player = new Player();
+  player.y = 550;
+  player.x = 100;
+  player.speed = 0;
+  
+  Boulder boulder = new Boulder();
+  boulder.x = -100;
+  boulder.y = 550;
+  boulder.speed = 5;
+  boulder.difficulty = 1;
 // Scrollbar constructor inputs: x,y,width,height,minVal,maxVal
 /*
   scaleBar = new Scrollbar (400, 575, 180, 12, 0.5, 1.0);  // set parameters for the scale bar
