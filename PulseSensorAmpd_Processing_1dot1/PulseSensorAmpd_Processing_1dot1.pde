@@ -50,6 +50,7 @@ int PulseWindowHeight = 512;
 int BPMWindowWidth = 180;
 int BPMWindowHeight = 340;
 boolean beat = false;    // set when a heart beat is detected, then cleared when the BPM graph is advanced
+float map_speed = 0; //map_speed should always be approximately player's speed
 
 Table table;
 Table table_single;
@@ -78,10 +79,12 @@ void setup() {
   player.speed = 0;
   
   Boulder boulder = new Boulder();
-  boulder.x = -100;
+  boulder.x = 0;//-100;
   boulder.y = 550;
   boulder.speed = 5;
   boulder.difficulty = 1;
+  
+  PImage img_boulder = loadImage("boulder.png");
 // Scrollbar constructor inputs: x,y,width,height,minVal,maxVal
 /*
   scaleBar = new Scrollbar (400, 575, 180, 12, 0.5, 1.0);  // set parameters for the scale bar
@@ -155,6 +158,11 @@ void draw() {
   refresh_board();
   noStroke();
   
+  //UPDATE ALL OBJ MOVEMENT HERE
+  map_speed;
+  boulder.x+=boulder.speed;
+  
+  
   /*
 // DRAW OUT THE PULSE WINDOW AND BPM WINDOW RECTANGLES  
   fill(eggshell);  // color for the window background
@@ -204,6 +212,10 @@ void draw() {
  }
  endShape();
  */
+ 
+ //Draw Boulder
+ image(img_boulder,boulder.x,boulder.y);
+ 
  
 // DRAW THE HEART AND MAYBE MAKE IT BEAT
   fill(250,0,0);
